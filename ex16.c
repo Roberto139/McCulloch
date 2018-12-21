@@ -383,6 +383,53 @@ void quebraExpressao(char *expReg, t_arvore **raiz)
     }
     return;
 }
+
+/**
+ * @brief salva e organiza informacoes no formato de arvore binaria, insere em preordem 
+ * @param [out] raiz objeto arvore
+ * @param ant auxiliar, serve como orientador, registra a ultima posicao percorrida na arvore, uso interno exclusivo
+ * inicie com o objeto da arvore
+ */
+void insere_arvore(t_arvore **raiz, t_arvore *ant, char *info)
+{
+    t_arvore *pl= *raiz;
+
+    if(!pl)
+    {
+        pl= malloc(sizeof(t_arvore));
+        pl->expReg= malloc(strlen(info) * sizeof(char));
+        strcpy(pl->expReg, info);
+        pl->tipo_op= tipo_operador(pl->expReg[0]);
+        pl->esq= NULL;
+        pl->dir= NULL;
+        pl->pai= ant;
+        *raiz= pl;
+        return;
+    }
+
+    if(pl->tipo_op == 0 || pl->dir == ant || (pl->tipo_op == 1 && pl->esq == ant))
+        insere_arvore(&pl->pai, pl, info);
+    else if (pl->esq == ant)
+        insere_arvore(&pl->dir, pl, info);
+    else
+        insere_arvore(&pl->esq, pl, info);
+    return;
+}
+
+/**
+ * @brief identifica o tipo da informacao: nao operador, operador unario ou operador binario
+ * @param [in] info informacao
+ * @return 0 p/ nao operador, 1 p/ operador unario, 2 p/ operador binario
+ */
+int tipo_operador(char info)
+{
+    if(info == '.' || info == '|')
+        return 2;
+    if(info == '*')
+        return 1;
+    return 0;
+}
+
 /* ---------------------------------------------------------------------------- */
 /* vi: set ai cin et ts=4 sw=4 tw=0 wm=0 fo=croqltn : C config for Vim modeline */
 /* Template by Dr. Beco <rcb at beco dot cc>  Version 20160714.153029           */
