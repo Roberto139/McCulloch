@@ -600,3 +600,38 @@ void uniao(ltrans_t **list)
  *  * @param [in] Q quintupla
  *  * @return estado
  *     */
+
+int estado_eliminar(quintupla_t Q)
+{
+    int vetor[Q.K], i, menor /* indice do vetor com menor valor*/;
+    ltrans_t *pl= Q.D;
+
+    for(i=0; i<Q.K; i++) vetor[i]= 0;
+
+    while(pl!= NULL)
+    {
+        if(pl->ei < Q.K)
+            vetor[pl->ei]+= 1;
+
+        if(pl->ef < Q.K)
+            vetor[pl->ef]+= 1;
+
+        pl= pl->prox;
+    }
+
+    menor= 0; /* indice do vetor inicial*/
+    for(i=1; i<Q.K; i++)
+    {
+        if(vetor[menor] == 0)
+            menor = i;
+        else if(vetor[menor] > vetor[i] && vetor[i] != 0)
+            menor= i;
+    }
+    return menor;
+}
+
+/**
+ *  * @brief faz a concatenacao de duas leis dado o estado que sera eliminado nessa juncao, Se apropria da funcao concatena_aux para atribuir as leis em uma unica string
+ *  * @param [in] list lista de transicoes
+ *  * @param [in] est estado a ser eliminado, referencia para de concatencao
+ **/
