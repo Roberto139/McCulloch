@@ -681,3 +681,52 @@ void concatena(ltrans_t **list, int est)
     * @param [in] ch lei 1
     * @param [in] ch2 lei 2
  **/
+
+
+
+void concatena_aux(char **dest, char *ch, char *ch2)
+{
+    *dest= malloc(definir_tamanho(ch, ch2) * sizeof(char));
+
+    if(strcmp(ch, "E") != 0)
+    {
+        if(strlen(ch)> 1 && strcmp(ch2, "E") != 0)
+        {
+            strcpy(*dest, "(");
+            strcat(*dest, ch);
+            strcat(*dest, ")");
+        }
+        else
+            strcpy(*dest, ch);
+    }
+
+    if(strcmp(ch2, "E") != 0)
+    {
+        if(strcmp(ch, "E") != 0)
+        {
+            strcat(*dest, ".");
+            if(strlen(ch2)> 1)
+            {
+                strcat(*dest, "(");
+                strcat(*dest, ch2);
+                strcat(*dest, ")");
+            }
+            else
+                strcat(*dest, ch2);
+        }
+        else
+            strcpy(*dest, ch2);
+    }
+
+    if(strcmp(ch, "E") == 0 && strcmp(ch2, "E") == 0)
+        strcpy(*dest, "E");
+
+    return;
+}
+
+/**
+ *  * @brief verfica se o estado dado possui a estrela, se caso sim, retorna a lei, se nao returna NULL
+ *   * @param [in] list lista de transicoes
+ *   * @param [in] ei_ef estado de referencia
+ *   * @return lei com estrela(*), ou NULL
+ **/
