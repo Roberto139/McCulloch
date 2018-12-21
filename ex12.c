@@ -769,4 +769,26 @@ char *estrela(ltrans_t **list, int ei_ef)
  *   * @return o tamanho de bytes necessarios
  **/
 
+int busca_semelhantes(ltrans_t *list, ltrans_t **pl, ltrans_t **pl2)
+{
+    ltrans_t *plist= list, *plbusca;
 
+    while(plist!= NULL)
+    {
+        if((plbusca= busca_transicao_lei(plist->prox, plist->ei, plist->ef)) != NULL)
+        {
+            *pl= plist;
+            *pl2= plbusca;
+            return 1;
+        }
+        plist= plist->prox;
+    }
+    return 0;
+}
+
+/**
+ *  * @brief Busca uma transicao usando apenas o estado inicial como referencia de busca
+ *   * @param [in] list lista das transicoes
+ *   * @param [in] est estado inicial (referencia)
+ *   * @return transicao com o estado inicial est
+ **/
