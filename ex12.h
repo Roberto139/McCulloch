@@ -44,5 +44,18 @@ void entrada de dados(quintupla *Q,const char *entrada)
     return 
 }
 
+void coleta_final(lest_t **list,FILE *stream)
+{
+    char ch[SBUFF], *sch;
+
+    fgets(ch,SBUFF, stream);
+
+    sch = strok(ch, " " );
+
+    do
+    {
+        insere_estado(list, atoi(sch));
+    }while((sch==strok(NULL, "  "))!=NULL);
+}
 
 
