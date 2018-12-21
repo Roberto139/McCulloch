@@ -90,4 +90,30 @@ int id_estado= 0;
 
 void help(void); /* print some help */
 void copyr(void); /* print version and copyright information */
-void ex16_init(void); /* global initialization function */
+void ex16_init(char *expReg); /* global initialization function */
+void quebraExpressao(char *expReg, t_arvore **raiz);
+void separador(char *expReg, char **partEsc, char **partDir, char *op, int size);
+void imprime_arvore(t_arvore *raiz, FILE *stream);
+void insere_arvore(t_arvore **raiz, t_arvore *ant, char *info);
+int tipo_operador(char info);
+void entrada_dados(char *expReg, char *entrada);
+
+void transformacao(t_arvore *raiz);
+void insere_estado(lest_t **list, int est);
+void insere_transicao(ltrans_t **list, int ei, char lei, int ef);
+void mini_quintupla(quintupla_t *q, char lei);
+void copia_ltrans(ltrans_t **dest, ltrans_t *list);
+void copia_lestado(lest_t **dest, lest_t *list);
+void transicoes_finais(ltrans_t **dest, lest_t *list, int novoFinal);
+void operacao_estrela(quintupla_t *res, quintupla_t q);
+void operacao_ou(quintupla_t *res, quintupla_t q1, quintupla_t q2);
+void operacao_e(quintupla_t *res, quintupla_t q1, quintupla_t q2);
+void operacao_geral(quintupla_t *res, quintupla_t q1, quintupla_t q2, char op);
+
+void imprime_transicao(ltrans_t *list, FILE *stream);
+void imprime_estados(lest_t *list, FILE *stream);
+void salva_quintupla(quintupla_t Q, char *arquivo);
+
+
+
+
