@@ -330,9 +330,54 @@ void ex12_init(void)
 
 int main(int *argv[])
 {
+    int opt; /* return from getopt() */
+
+    IFDEBUG("Starting optarg loop...\n");
+
+    /* getopt() configured options:i
+     *    *        -h  help
+     *       *        -c  copyrithg and version notes
+     *          *        -v  verbose
+     *             */
+    opterr = 0;
+    while((opt = getopt(argc, argv, "vhfc")) != EOF)
+        switch(opt)
+        {
+            case 'h':
+                help();
+                break;
+            case 'c':
+                copyr();
+                break;
+            case 'f':
+                ex12_init(argv[2]);
+                break;
+            case 'v':
+                verb++;
+                break;
+            case '?':
+            default:
+                printf("Type\n\t$man %s\nor\n\t$%s -h\nfor help.\n\n", argv[0], argv[0]);
+                return EXIT_FAILURE;
+        }
+
+            if(verb)
+                    printf("Verbose level set at: %d\n", verb);
+            /* ...and we are done */
     return 0;
 }
-
+/* ------------------------------------------------------*/
+/**
+ *  * @ingroup GroupUnique
+ *  * @brief This function initializes some operations before start
+ *  * @details Details to be written
+ *  * @return Void
+ *  * @todo Need to implement it. Its empty now.
+ *  * @author Ruben Carlo Benante
+ *  * @version 20160520.000202
+ *  * @date 2016-05-20
+ *  *
+ **/
 
 void entrada de dados(quintupla *Q,const char *entrada)
 {
@@ -368,6 +413,36 @@ void entrada de dados(quintupla *Q,const char *entrada)
     fgets(ch, SBUFF, pf); 
     Q->D= atoi(ch);
     coleta_transicao(&Q->D, pf);
+/**
+ *  @brief imprime ou salva uma quintupla no arquivo
+ *  @param [in] Q armazena a quintupla
+ *  @param [in] arquivo nome do arquivo a ser salvo, caso NULL imprime na tela
+ */
+void salva_quintupla(quintupla_t Q, char *arquivo)
+{
+    FILE *pf;
+
+    if(!arquivo)
+        pf= stdout;
+    else
+        pf= fopen(arquivo, "w");
+
+    fprintf(pf, "#K\n");
+    fprintf(pf, "%d\n", Q.K);
+    fprintf(pf, "#A\n");
+    fprintf(pf, "%c\n", Q.A);
+    fprintf(pf, "#S\n");
+    fprintf(pf, "%d\n", Q.S);
+    fprintf(pf, "#F\n");
+    imprime_estados(Q.F, pf);
+    fprintf(pf, "#D\n");
+    imprime_transicao(Q.D, pf);
+
+    if(arquivo)
+        fclose(pf);
+
+    return;
+}
 
     fclose(pf);
 
@@ -1112,3 +1187,33 @@ void ex12_init(const char *arquivo)
  *  * @date 2016-05-20
  *  *
  **/
+/**
+ *  @brief imprime ou salva uma quintupla no arquivo
+ *  @param [in] Q armazena a quintupla
+ *  @param [in] arquivo nome do arquivo a ser salvo, caso NULL imprime na tela
+ */
+void salva_quintupla(quintupla_t Q, char *arquivo)
+{
+    FILE *pf;
+
+    if(!arquivo)
+        pf= stdout;
+    else
+        pf= fopen(arquivo, "w");
+
+    fprintf(pf, "#K\n");
+    fprintf(pf, "%d\n", Q.K);
+    fprintf(pf, "#A\n");
+    fprintf(pf, "%c\n", Q.A);
+    fprintf(pf, "#S\n");
+    fprintf(pf, "%d\n", Q.S);
+    fprintf(pf, "#F\n");
+    imprime_estados(Q.F, pf);
+    fprintf(pf, "#D\n");
+    imprime_transicao(Q.D, pf);
+
+    if(arquivo)
+        fclose(pf);
+
+    return;
+}
