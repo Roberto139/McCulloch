@@ -778,8 +778,72 @@ void insere_estado(lest_t **list, int est)
     return;
 }
 
+/**
+ *  @brief imprime uma lista de transicoes
+ *  @param [in] list armazena a lista
+ *  @param [in] stream objeto a ser printado a lista
+ */
+void imprime_transicao(ltrans_t *list, FILE *stream)
+{
+    ltrans_t *pl= list;
 
+    while(pl!= NULL)
+    {
+        fprintf(stream, "%d %c %d\n", pl->ei, pl->lei, pl->ef);
+        pl= pl->prox;
+    }
+    fprintf(stream, "\n");
+    return;
+}
 
+/**
+ *  @brief imprime uma lista de estados
+ *  @param [in] list armazena a lista
+ *  @param [in] stream objeto a ser printado a lista
+ */
+void imprime_estados(lest_t *list, FILE *stream)
+{
+    lest_t *pl= list;
+
+    while(pl!= NULL)
+    {
+        fprintf(stream, "%d ", pl->estado);
+        pl= pl->prox;
+    }
+    fprintf(stream, "\n");
+    return;
+}
+
+/**
+ *  @brief imprime ou salva uma quintupla no arquivo
+ *  @param [in] Q armazena a quintupla
+ *  @param [in] arquivo nome do arquivo a ser salvo, caso NULL imprime na tela
+ */
+void salva_quintupla(quintupla_t Q, char *arquivo)
+{
+    FILE *pf;
+
+    if(!arquivo)
+        pf= stdout;
+    else
+        pf= fopen(arquivo, "w");
+
+    fprintf(pf, "#K\n");
+    fprintf(pf, "%d\n", Q.K);
+    fprintf(pf, "#A\n");
+    fprintf(pf, "%c\n", Q.A);
+    fprintf(pf, "#S\n");
+    fprintf(pf, "%d\n", Q.S);
+    fprintf(pf, "#F\n");
+    imprime_estados(Q.F, pf);
+    fprintf(pf, "#D\n");
+    imprime_transicao(Q.D, pf);
+
+    if(arquivo)
+        fclose(pf);
+
+    return;
+}
 /* ---------------------------------------------------------------------------- */
 /* vi: set ai cin et ts=4 sw=4 tw=0 wm=0 fo=croqltn : C config for Vim modeline */
 /* Template by Dr. Beco <rcb at beco dot cc>  Version 20160714.153029           */
