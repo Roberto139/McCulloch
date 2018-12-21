@@ -401,7 +401,6 @@ void coleta_final(lest_t **list,FILE *stream)
  **/
 
 void coleta_transicao(ltrans_t **list, FILE *stream)
-
 {
     char ch[SBUFF], *sei, *slei, *sef;
 
@@ -415,33 +414,34 @@ void coleta_transicao(ltrans_t **list, FILE *stream)
                 }
 
 
+
 /**
- *  * @brief limita a quintupla para apenas uma unica entrada e uma unica saida da AFD
- *  * @param [in, out] Q quintupla AFD
- **/
+*  * @brief limita a quintupla para apenas uma unica entrada e uma unica saida da AFD
+*  * @param [in, out] Q quintupla AFD
+**/
+
 void estados_limites(quintupla_t *Q)
+{
 
-                {
+    lest_t *pl= Q->F;
 
-                lest_t *pl= Q->F;
-
-                insere_transicao(&Q->D, Q->K, "E", Q->S);
-
+    insere_transicao(&Q->D, Q->K, "E", Q->S);
 
 
-                while
 
-                {   
+    while
 
-                insere_transicao(&Q->D, pl->estado, "E", Q->K+1);
+    {   
 
-                pl= pl->prox;
+        insere_transicao(&Q->D, pl->estado, "E", Q->K+1);
 
-                }
+        pl= pl->prox;
 
-                return;
+    }
 
-                }
+    return;
+
+}
 /**
  *  * @brief verifica se a lista das transicoes possui apenas um elemento
  *  * @param [in] list lista de transicoes
@@ -634,4 +634,50 @@ int estado_eliminar(quintupla_t Q)
  *  * @brief faz a concatenacao de duas leis dado o estado que sera eliminado nessa juncao, Se apropria da funcao concatena_aux para atribuir as leis em uma unica string
  *  * @param [in] list lista de transicoes
  *  * @param [in] est estado a ser eliminado, referencia para de concatencao
+ **/
+
+void concatena(ltrans_t **list, int est)
+{
+    ltrans_t *pl= *list, *pl2, *plr, *pl2r, res;
+    char *chstar, *aux;
+
+    chstar= estrela(list, est); /* verifica se o estado selecionado possui a estrela*/
+
+    while((pl= busca_por_ef(pl, est)) != NULL) /* procurando por transicoes que terminam com o estado de referencia (est)*/
+    {
+        pl2= *list;
+        while((pl2= busca_por_ei(pl2, est))!= NULL) /* procurando por transicoes que inicia com o 'est'*/
+        {
+            /* Processo de concatenacao*/
+            res.ei= pl->ei;
+
+            if(chstar!= NULL)
+            {
+                concatena_aux(&aux, pl->lei, chstar);
+                concatena_aux(&res.lei, aux, pl2->lei);
+            }
+            else
+                concatena_aux(&res.lei, pl->lei, pl2->lei);
+
+            res.ef= pl2->ef;
+
+            insere_transicao(list, res.ei, res.lei, res.ef);
+            /* ---------------------------------- */
+
+            pl2r= pl2;
+            pl2= pl2->prox;
+            remove_transicao(list, pl2r);
+        }
+        plr= pl;
+        pl= pl->prox;
+        remove_transicao(list, plr);
+    }
+    return;
+}
+
+/**
+ *  * @brief Funcao que contatena (atribui) duas leis numa string
+    * @param [out] lei concatenada
+    * @param [in] ch lei 1
+    * @param [in] ch2 lei 2
  **/
