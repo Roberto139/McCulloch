@@ -642,6 +642,73 @@ void operacao_estrela(quintupla_t *res, quintupla_t q)
     transicoes_finais(&res->D, q.F, q.S);
 }
 
+/**
+ *  @brief gera transicoes onde todos os finais deixam de ser final e passam o titulo para um novo estado
+ *  @param [out] dest onde vai ser armazenado as transicoes
+ *  @param [in] list lista de finais
+ *  @param [in] novoFinal estado novo a tranformar final
+ */
+void transicoes_finais(ltrans_t **dest, lest_t *list, int novoFinal)
+{
+    lest_t *pl= list;
+
+    while(pl!= NULL)
+    {
+        insere_transicao(dest, pl->estado, 'E', novoFinal);
+        pl= pl->prox;
+    }
+    return;
+}
+
+/**
+ *  @brief copia uma lista de estados
+ *  @param [out] dest lista a armazenar
+ *  @param [in] list lista a ser copiada
+ */
+void copia_lestado(lest_t **dest, lest_t *list)
+{
+    while(list!= NULL)
+    {
+        insere_estado(dest, list->estado);
+        list= list->prox;
+    }
+    return;
+}
+
+/**
+ *  @brief copia uma lista de transicoes
+ *  @param [out] dest lista a armazenar
+ *  @param [in] list lista a ser copiada
+ */
+void copia_ltrans(ltrans_t **dest, ltrans_t *list)
+{
+    while(list!= NULL)
+    {
+        insere_transicao(dest, list->ei, list->lei, list->ef);
+        list= list->prox;
+    }
+    return;
+}
+
+/**
+ *  @brief constroi uma quintupla simples, com apenas um transicao possivel, exemplos de expressoes regular -> "a", "b" ou "c" ...
+ *  @param [out] q armazena aq quintupla contruida
+ *  @param [in] lei minima expressao regular
+ */
+void mini_quintupla(quintupla_t *q, char lei)
+{
+    q->K= 2;
+    q->A= lei;
+    q->S= id_estado;
+    q->F= NULL;
+    insere_estado(&q->F, id_estado+1);
+    q->D= NULL;
+    insere_transicao(&q->D, id_estado, lei, id_estado+1);
+    id_estado+= 2;
+
+    return;
+}
+
 
 
 
