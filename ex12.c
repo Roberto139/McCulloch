@@ -393,6 +393,13 @@ void coleta_final(lest_t **list,FILE *stream)
     }while((sch==strok(NULL, "  "))!=NULL);
 }
 
+/** 
+ *  * @brief coleta o estados finais do arquivo, auxilia a funcao entrada_dados()
+ *  * @param [out] list armazena o estados finais
+ *  * @param [in] stream referencia do arquivo
+ *  * @return
+ **/
+
 void coleta_transicao(ltrans_t **list, FILE *stream)
 
 {
@@ -407,7 +414,12 @@ void coleta_transicao(ltrans_t **list, FILE *stream)
                 }
                 }
 
-                void estados_limites(quintupla_t *Q)
+
+/**
+ *  * @brief limita a quintupla para apenas uma unica entrada e uma unica saida da AFD
+ *  * @param [in, out] Q quintupla AFD
+ **/
+void estados_limites(quintupla_t *Q)
 
                 {
 
@@ -430,6 +442,11 @@ void coleta_transicao(ltrans_t **list, FILE *stream)
                 return;
 
                 }
+/**
+ *  * @brief verifica se a lista das transicoes possui apenas um elemento
+ *  * @param [in] list lista de transicoes
+ *  * @return verdadeiro ou falso caso a lista seja unitaria
+ **/
 
 int lista_unitaria(ltrans_t *list)
 {
@@ -438,7 +455,10 @@ int lista_unitaria(ltrans_t *list)
     return list->prox ==NULL ? 1:0;
 }
 
-
+/**
+ * * @brief procura por transicoes semelhantes do tipo transicao 1 e 2 (ei1 == ei2, lei1 != ou == lei2, ef1 == ef2), e faz a uniao das leis separando as pelo operador |
+ * * @param [in, out] list lista das transicoes
+ **/
 
 
 void uniao(ltrans_t **list)
@@ -478,6 +498,11 @@ void uniao(ltrans_t **list)
     return;
 }
 
+/**
+ *  * @brief Procura pelo estado com menos interacoes, e ignora os estado limites
+ *  * @param [in] Q quintupla
+ *  * @return estado
+ **/
 int estado_eliminar(quintupla_t Q)
 {
     int vetor[Q.K], i, menor /* indice do vetor com menor valor*/;
@@ -507,6 +532,12 @@ int estado_eliminar(quintupla_t Q)
     return menor;
 }
 
+/**
+ *  * @brief faz a concatenacao de duas leis dado o estado que sera eliminado nessa juncao, Se apropria da funcao concatena_aux para atribuir as leis em uma unica string
+ *  * @param [in] list lista de transicoes
+ *  * @param [in] est estado a ser eliminado, referencia para de concatencao
+ **/
+
 void estados_limite(quintupla_t *Q)
 {
     lest_t *pl= Q->F;
@@ -520,4 +551,8 @@ void estados_limite(quintupla_t *Q)
     return;
 }
 
-
+/**
+ *  * @brief verifica se a lista das transicoes possui apenas um elemento
+ *  * @param [in] list lista de transicoes
+ *  * @return verdadeiro ou falso caso a lista seja unitaria
+ **/
