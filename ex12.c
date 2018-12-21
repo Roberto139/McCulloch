@@ -833,3 +833,24 @@ ltrans_t *busca_por_ef(ltrans_t *list, int est)
  *   * @param [in] lei lei
  *   * @return uma transicao
  **/
+
+ltrans_t *busca_transicao_lei(ltrans_t *list, int ei, int ef)
+{
+    ltrans_t *pl= list;
+
+    while(pl!= NULL)
+    {
+        if(pl->ei== ei && pl->ef == ef)
+            return pl;
+        pl= pl->prox;
+    }
+
+    return NULL;
+}
+
+/* ----------------------------------------------------- */
+/** 
+ *  * @brief salva um quintupla no arquivo caso dado o nome, caso nao imprime na tela
+ *  * @param [in] Q quintupla
+ *  * @param [in] arquivo nome do aquivo
+ **/
