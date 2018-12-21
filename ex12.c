@@ -730,3 +730,43 @@ void concatena_aux(char **dest, char *ch, char *ch2)
  *   * @param [in] ei_ef estado de referencia
  *   * @return lei com estrela(*), ou NULL
  **/
+
+
+char *estrela(ltrans_t **list, int ei_ef)
+{
+    int tamanho= 0;
+    char *chstar;
+    ltrans_t *plstar;
+
+    if((plstar= busca_transicao_lei(*list, ei_ef, ei_ef)) == NULL)
+        return NULL;
+
+    if((tamanho= strlen(plstar->lei)) > 1)
+        tamanho+= 2;
+
+    chstar= malloc((tamanho + 1) * sizeof(char));
+
+    if(strlen(plstar->lei) > 1)
+        strcpy(chstar, "(");
+    else
+        strcpy(chstar, "");
+
+    strcat(chstar, plstar->lei);
+
+    if(strlen(plstar->lei) > 1)
+        strcat(chstar, ")");
+
+    strcat(chstar, "*");
+    remove_transicao(list, plstar);
+
+    return chstar;
+}
+
+/**
+ *  * @brief define o tamanho de memoria que sera usada para armazena duas leis
+ *   * @param [in] ch lei 1
+ *   * @param [in] ch2 lei 2
+ *   * @return o tamanho de bytes necessarios
+ **/
+
+
