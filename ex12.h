@@ -58,4 +58,16 @@ void coleta_final(lest_t **list,FILE *stream)
     }while((sch==strok(NULL, "  "))!=NULL);
 }
 
+void coleta_transicao(ltrans_t **list, FILE *stream)
 
+{
+    char ch[SBUFF], *sei, *slei, *sef;
+
+    while(fgets(ch, SBUFF, stream)!=NULL)
+    {
+        sei=strok(ch, " ");
+        slei=strok(NULL, " ");
+        sef=strok(NULL, " ");
+        insere_transicao(list, atoi(sei), slei, atoi(sef);
+     }
+}
