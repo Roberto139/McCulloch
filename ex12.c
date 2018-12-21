@@ -988,3 +988,98 @@ void insere_transicao(ltrans_t **list, int ei, char *lei, int ef)
  *  * @param [out] list lista de estados
  *  * @param [in] r elemento a ser eliminado
  **/
+
+void remove_estado(lest_t **list, lest_t *r)
+{
+    lest_t *pl= *list, *plant= NULL;
+
+    while(pl!= NULL)
+    {
+        if(pl == r)
+            break;
+        plant= pl;
+        pl= pl->prox;
+    }
+
+    if(!pl)
+        return;
+
+    if(!plant)
+        *list= pl->prox;
+    else
+        plant->prox= pl->prox;
+
+    free(pl);
+    return;
+}
+
+/**
+ *  * @breif remove um elemento da lista das transicoes
+ *  * @param [out] list lista de estados
+ *  * @param [in] r elemento a ser eliminado
+ **/
+void remove_transicao(ltrans_t **list, ltrans_t *r)
+{
+    ltrans_t *pl= *list, *plant= NULL;
+
+    while(pl!= NULL)
+    {
+        if(pl == r)
+            break;
+        plant= pl;
+        pl= pl->prox;
+    }
+
+    if(!pl)
+        return;
+
+    if(!plant)
+        *list= pl->prox;
+    else
+        plant->prox= pl->prox;
+
+    free(pl);
+    return;
+}
+
+/**
+ *  * @brief apaga toda um lista de estados
+ *  * @param [in,out] list lista de estados
+ **/
+void apaga_estados(lest_t **list)
+{
+    lest_t *pl= *list;
+
+    while(pl!= NULL)
+    {
+        remove_estado(list, pl);
+        pl= *list;
+    }
+    return;
+}
+
+/**
+ *  * @brief apaga toda um lista de transicoes
+ *  * @param [in,out] list lista de transicoes
+ **/
+void apaga_transicao(ltrans_t **list)
+{
+    ltrans_t *pl= *list;
+
+    while(pl!= NULL)
+    {
+        remove_transicao(list, pl);
+        pl= *list;
+    }
+}
+
+/**
+ *  * @ingroup GroupUnique
+ *  * @brief Prints help information and exit
+ *  * @details Prints help information (usually called by opt -h)
+ *  * @return Void
+ *  * @author Ruben Carlo Benante
+ *  * @version 20160520.000202
+ *  * @date 2016-05-20
+ *  *
+ **/
