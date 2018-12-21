@@ -556,3 +556,47 @@ void estados_limite(quintupla_t *Q)
  *  * @param [in] list lista de transicoes
  *  * @return verdadeiro ou falso caso a lista seja unitaria
  **/
+
+
+void uniao(ltrans_t **list)
+{
+    ltrans_t *pl, *pl2, res/* variavel que vai unificar as transicoes semelhantes*/;
+
+    while(busca_semelhantes(*list, &pl, &pl2)) /* procurando por transicoes semelhantes, retorna 0 se nada for encontrado, e 1 se encontrado*/
+    {
+        res.ei= pl->ei;
+        res.ef= pl->ef;
+        res.lei= malloc(definir_tamanho(pl->lei, pl2->lei) * sizeof(char)); /* definindo o tamanho da string que vai unir as leis*/
+
+        /* processo de atribuicao da uniao das leis em um string*/
+        if(strcmp(pl->lei, "E") != 0)
+        {
+            strcpy(res.lei, pl->lei);
+            if(strcmp(pl2->lei, "E") != 0)
+            {
+                strcat(res.lei, "|");
+                strcat(res.lei, pl2->lei);
+            }
+        }
+        else
+        {
+            if(strcmp(pl2->lei, "E") != 0)
+                strcpy(res.lei, pl2->lei);
+            else
+                strcpy(res.lei, "E");
+        }
+        /* ------------- */
+
+        remove_transicao(list, pl);
+        remove_transicao(list, pl2);
+        insere_transicao(list, res.ei, res.lei, res.ef);
+        free(res.lei);
+    }
+    return;
+}
+
+/**
+ *  * @brief Procura pelo estado com menos interacoes, e ignora os estado limites
+ *  * @param [in] Q quintupla
+ *  * @return estado
+ *     */
