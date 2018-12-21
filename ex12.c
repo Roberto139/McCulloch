@@ -373,7 +373,12 @@ void entrada de dados(quintupla *Q,const char *entrada)
 
     return 
 }
-
+/** 
+ *  * @brief coleta o estados finais do arquivo, auxilia a funcao entrada_dados()
+ *  * @param [out] list armazena o estados finais
+ *  * @param [in] stream referencia do arquivo
+ *  * @return
+ **/
 void coleta_final(lest_t **list,FILE *stream)
 {
     char ch[SBUFF], *sch;
@@ -514,3 +519,5 @@ void estados_limite(quintupla_t *Q)
     }
     return;
 }
+
+
