@@ -185,28 +185,34 @@ void ex16_init(void); /* global initialization function */
 int main(int argc, char *argv[])
 {
     int opt; /* return from getopt() */
+    char sfile[SBUFF];
 
-    IFDEBUG("Starting optarg loop...");
+    IFDEBUG("Starting optarg loop...\n");
 
     /* getopt() configured options:
      *        -h  help
-     *        -V  version
+     *        -c  copyrithg and version notes
      *        -v  verbose
+     *        -f  given file name
      */
     opterr = 0;
-    while((opt = getopt(argc, argv, "vhV")) != EOF)
+    while((opt = getopt(argc, argv, "vhcf:")) != EOF)
         switch(opt)
         {
             case 'h':
                 help();
                 break;
-            case 'V':
+            case 'c':
                 copyr();
                 break;
             case 'v':
                 verb++;
                 break;
             case '?':
+                break;
+            case 'f':
+                strcpy(sfile, optarg);
+                break;
             default:
                 printf("Type\n\t$man %s\nor\n\t$%s -h\nfor help.\n\n", argv[0], argv[0]);
                 return EXIT_FAILURE;
@@ -214,11 +220,9 @@ int main(int argc, char *argv[])
 
     if(verb)
         printf("Verbose level set at: %d\n", verb);
-
-    ex16_init(); /* initialization function */
-
     /* ...and we are done */
-    /* Write your code here... */
+
+    ex16_init(sfile); /* global initialization function: ainda a saber para que usar se precisar */
 
     return EXIT_SUCCESS;
 }
@@ -313,10 +317,22 @@ void copyr(void)
  * @copyright Use this tag only if not the same as the whole file
  *
  */
-void ex16_init(void)
+void ex16_init(char *entrada)
 {
+    char expReg[SBUFF];
+    t_arvore *raiz= NULL;
+
     IFDEBUG("ex16_init()");
     /* initialization */
+
+    entrada_dados(expReg, entrada);
+    quebraExpressao(expReg, &raiz);
+    
+    transformacao(raiz);
+
+    printf("\n\nExpressao Regular: %s\nQuintupla: \n\n", expReg);
+    salva_quintupla(raiz->Q, NULL);
+
     return;
 }
 
