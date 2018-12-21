@@ -886,3 +886,45 @@ void salva_quintupla(quintupla_t Q, char *arquivo)
  *  * @param [in] list lista de estados
  *  * @param [in] stream objeto onde será impresso a lista de estados
  **/
+
+void imprime_estados(lest_t *list, FILE *stream)
+{
+    lest_t *pl= list;
+
+    if(pl!= NULL)
+    {
+        fprintf(stream, "%d", pl->estado);
+        pl= pl->prox;
+    }
+
+    while(pl!= NULL)
+    {
+        fprintf(stream, " %d", pl->estado);
+        pl= pl->prox;
+    }
+    fprintf(stream, "\n");
+    return;
+}
+
+/**
+ *  * @brief imprime uma lista de Transicoes
+ *  * @param [in] list lista de Transicoes
+ *  * @param [in] stream objeto onde será impresso a lista de transicoes
+ **/
+void imprime_transicao(ltrans_t *list, FILE *stream)
+{
+    ltrans_t *pl= list;
+
+    while(pl!= NULL)
+    {
+        fprintf(stream, "%d %s %d\n", pl->ei, pl->lei, pl->ef);
+        pl= pl->prox;
+    }
+    return;
+}
+
+/**
+ *  * @brief cria uma lista e atribui novos elementos a lista de estados
+ *  * @param [out] list lista de estados
+ *  * @param [in] est estado(valor) a ser atribuido na lista
+ **/
