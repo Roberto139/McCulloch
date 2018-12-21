@@ -792,3 +792,44 @@ int busca_semelhantes(ltrans_t *list, ltrans_t **pl, ltrans_t **pl2)
  *   * @param [in] est estado inicial (referencia)
  *   * @return transicao com o estado inicial est
  **/
+ltrans_t *busca_por_ei(ltrans_t *list, int est)
+{
+    ltrans_t *pl= list;
+
+    while(pl!= NULL)
+    {
+        if(pl->ei == est)
+            return pl;
+        pl= pl->prox;
+    }
+
+    return NULL;
+}
+
+/**
+ *  * @brief Busca uma transicao usando apenas o estado final como referencia de busca
+ *   * @param [in] list lista das transicoes
+ *    * @param [in] est estado final (referencia)
+ *     * @return transicao com o estado final est
+ *      */
+ltrans_t *busca_por_ef(ltrans_t *list, int est)
+{
+    ltrans_t *pl= list;
+
+    while(pl!= NULL)
+    {
+        if(pl->ef == est)
+            return pl;
+        pl= pl->prox;
+    }
+
+    return NULL;
+}
+
+/**
+ *  * @brief Busca uma transicao com o estado inicial e a lei como referencia
+ *   * @param [in] list lista das transicoes
+ *   * @param [in] ei estado inicial (referencia)
+ *   * @param [in] lei lei
+ *   * @return uma transicao
+ **/
