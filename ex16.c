@@ -470,6 +470,37 @@ int tipo_operador(char info)
     return 0;
 }
 
+/**
+ * @brief imprime os arvores em preordem
+ */
+void imprime_arvore(t_arvore *raiz, FILE *stream)
+{
+    t_arvore *pl= raiz;
+
+    if(!pl)
+        return;
+
+    imprime_arvore(pl->esq, stream);
+    imprime_arvore(pl->dir, stream);
+
+    printf("\n");
+    if(pl->tipo_op == 2)
+        fprintf(stream, "(%s)%s(%s)\n", pl->esq->expReg, pl->expReg, pl->dir->expReg);
+    else if(pl->tipo_op == 1)
+        fprintf(stream, "(%s)%s\n", pl->esq->expReg, pl->expReg);
+    else
+        fprintf(stream, "%s\n", pl->expReg);
+
+    salva_quintupla(pl->Q, NULL);
+    getchar();
+    printf("\n");
+
+    return;
+}
+
+
+
+
 /* ---------------------------------------------------------------------------- */
 /* vi: set ai cin et ts=4 sw=4 tw=0 wm=0 fo=croqltn : C config for Vim modeline */
 /* Template by Dr. Beco <rcb at beco dot cc>  Version 20160714.153029           */
