@@ -502,5 +502,15 @@ int estado_eliminar(quintupla_t Q)
     return menor;
 }
 
+void estados_limite(quintupla_t *Q)
+{
+    lest_t *pl= Q->F;
+    insere_transicao(&Q->D, Q->K, "E", Q->S);
 
-
+    while(pl!= NULL)
+    {
+        insere_transicao(&Q->D, pl->estado, "E", Q->K+1);
+        pl= pl->prox;
+    }
+    return;
+}
