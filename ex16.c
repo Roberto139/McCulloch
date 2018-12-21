@@ -87,7 +87,7 @@
 /* To include assert.h for diagnostics, do it after #define DEBUG bellow */
 /* #include <time.h> */ /* Time and date functions */
 /* #include <math.h> */ /* Mathematics functions */
-/* #include <string.h> */ /* Strings functions definitions */
+#include <string.h>  /* Strings functions definitions */
 /* #include <dlfcn.h> */ /* Dynamic library */
 /* #include <malloc.h> */ /* Dynamic memory allocation */
 /* #include <unistd.h> */ /* UNIX standard function */
@@ -139,14 +139,9 @@
 /* ---------------------------------------------------------------------- */
 /* globals */
 
-static int verb = 0; /**< verbose level, global within the file */
 
 /* ---------------------------------------------------------------------- */
 /* prototypes */
-
-void help(void); /* print some help */
-void copyr(void); /* print version and copyright information */
-void ex16_init(void); /* global initialization function */
 
 /* ---------------------------------------------------------------------- */
 /**
