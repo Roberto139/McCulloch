@@ -82,6 +82,7 @@
 #include <stdio.h> /* Standard I/O functions */
 #include <stdlib.h> /* Miscellaneous functions (rand, malloc, srand)*/
 #include <getopt.h> /* get options from system argc/argv */
+#include "ex16.h" /* library with definitions */
 
 /* To include assert.h for diagnostics, do it after #define DEBUG bellow */
 /* #include <time.h> */ /* Time and date functions */
@@ -224,6 +225,19 @@ int main(int argc, char *argv[])
 
 /* Write your functions here... */
 
+/** 
+ * @brief Coleta a Expressao Regular do arquivo
+ * @param [out] expReg armazena a expressao regular
+ * @param [in] entrada nome do arquivo
+ */
+void entrada_dados(char *expReg, char *entrada)
+{
+    FILE *pf= fopen(entrada, "r");
+
+    fgets(expReg, SBUFF, pf);
+    return;
+}
+
 /* ---------------------------------------------------------------------- */
 /**
  * @ingroup GroupUnique
@@ -318,6 +332,8 @@ void ex16_init(void)
     /* initialization */
     return;
 }
+
+
 
 /* ---------------------------------------------------------------------------- */
 /* vi: set ai cin et ts=4 sw=4 tw=0 wm=0 fo=croqltn : C config for Vim modeline */
