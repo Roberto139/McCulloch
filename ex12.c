@@ -1073,6 +1073,35 @@ void apaga_transicao(ltrans_t **list)
     }
 }
 
+void ex12_init(const char *arquivo)
+{
+    IFDEBUG("ex12_init()");
+
+    int estado;
+    quintupla_t Q;
+
+    entrada_dados(&Q, arquivo);
+
+    estados_limite(&Q);
+
+    while(!lista_unitaria(Q.D))
+    {
+        uniao(&Q.D);
+
+        estado= estado_eliminar(Q);
+
+        concatena(&Q.D, estado);
+    }
+    fprintf(stdout, "Expressao Regular: %s\n", Q.D->lei);
+    return;
+}
+
+/** 
+ *  * @brief finalidade de coletar as entradas do arquivo (quintupla (AFND))
+ *  * @param [out] Q armazena o quintupla adquirida do arquivo
+ *  * @param [in] entrada nome do arquivo
+ **/
+
 /**
  *  * @ingroup GroupUnique
  *  * @brief Prints help information and exit
