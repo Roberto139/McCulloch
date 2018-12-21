@@ -69,5 +69,30 @@ void coleta_transicao(ltrans_t **list, FILE *stream)
         slei=strok(NULL, " ");
         sef=strok(NULL, " ");
         insere_transicao(list, atoi(sei), slei, atoi(sef);
-     }
+    }
 }
+
+void estados_limites(quintupla_t *Q)
+
+{
+
+    lest_t *pl= Q->F;
+
+    insere_transicao(&Q->D, Q->K, "E", Q->S);
+
+
+
+    while
+
+    {   
+
+        insere_transicao(&Q->D, pl->estado, "E", Q->K+1);
+
+        pl= pl->prox;
+
+     }
+
+    return;
+
+    }
+
