@@ -225,19 +225,6 @@ int main(int argc, char *argv[])
 
 /* Write your functions here... */
 
-/** 
- * @brief Coleta a Expressao Regular do arquivo
- * @param [out] expReg armazena a expressao regular
- * @param [in] entrada nome do arquivo
- */
-void entrada_dados(char *expReg, char *entrada)
-{
-    FILE *pf= fopen(entrada, "r");
-
-    fgets(expReg, SBUFF, pf);
-    return;
-}
-
 /* ---------------------------------------------------------------------- */
 /**
  * @ingroup GroupUnique
@@ -333,8 +320,69 @@ void ex16_init(void)
     return;
 }
 
+/** 
+ * @brief Coleta a Expressao Regular do arquivo
+ * @param [out] expReg armazena a expressao regular
+ * @param [in] entrada nome do arquivo
+ */
+void entrada_dados(char *expReg, char *entrada)
+{
+    FILE *pf= fopen(entrada, "r");
 
+    fgets(expReg, SBUFF, pf);
+    return;
+}
 
+/**
+ * @brief responsavel em quebra a Expressao Regular em expressoes miminas, e armazenando numa arvore binaria
+ * @param [in] expReg Expressao Regular
+ * @param [out] raiz Arvore Binaria
+ */
+void quebraExpressao(char *expReg, t_arvore **raiz)
+{
+    const int nOp= 3; /* numero de operadores*/
+    char operadores[3] = {'|', '.', '*'} /* operadores em ordem crescente de prioridade*/,
+         *op= malloc(2*sizeof(char)) /*operador*/,
+         *partEsq, *partDir; /* Quebra da expressoas partes esqueda e direita*/
+    int i, parentese= 0 /* parentese aberto*/;
+    size_t j;
+
+    if(!expReg)
+        return;
+
+    /* Procurando pelo operador de menor prioridade, sera o ponto de bisseccao do expressao*/
+    for(i=0; i<nOp; i++)
+    {
+        for(j=0; j< strlen(expReg); j++) /* expressao escolhida, de baixa prioridade para a alta*/
+        {
+            if(expReg[j] == '(') /** para caso enteja entrando no parentese onde torna a expressao prioritaria*/
+                parentese++;
+            else if(expReg[j] == ')') /* sainda do parentese*/
+                parentese--;
+            else if(expReg[j] == operadores[i] && parentese == 0) /* verificando se entrou operador caso nao esteja dentro de um parentese*/ 
+            {
+                separador(expReg, &partEsq, &partDir, op, j);
+
+                insere_arvore(raiz, *raiz, op);
+
+                /* caso foi alcansado uma expressao minima*/
+                if(strlen(partEsq) == 1)
+                    insere_arvore(raiz, *raiz, partEsq);
+                else
+                    quebraExpressao(partEsq, raiz);
+
+                /* caso foi alcansado uma expressao minima*/
+                if(strlen(partDir) == 1)
+                    insere_arvore(raiz, *raiz, partDir);
+                else
+                    quebraExpressao(partDir, raiz);
+
+                return;
+            }
+        }
+    }
+    return;
+}
 /* ---------------------------------------------------------------------------- */
 /* vi: set ai cin et ts=4 sw=4 tw=0 wm=0 fo=croqltn : C config for Vim modeline */
 /* Template by Dr. Beco <rcb at beco dot cc>  Version 20160714.153029           */
