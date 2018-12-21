@@ -709,9 +709,74 @@ void mini_quintupla(quintupla_t *q, char lei)
     return;
 }
 
+/**
+ *  @brief cria e insere um lista de transicoes
+ *  @param [out] list armazena a lista
+ *  @param [in] ei estado inicial da transicao
+ *  @param [in] lei lei da transicao
+ *  @param [in] ei estado final da transicao
+ */
+void insere_transicao(ltrans_t **list, int ei, char lei, int ef)
+{
+    ltrans_t *pl= *list, *plant= NULL;
 
+    while(pl!= NULL)
+    {
+        plant= pl;
+        pl= pl->prox;
+    }
 
+    pl= malloc(sizeof(ltrans_t));
+    pl->ei= ei;
+    pl->lei= lei;
+    pl->ef= ef;
+    pl->prox= NULL;
 
+    if(!plant)
+        *list= pl;
+    else
+        plant->prox= pl;
+
+    return;
+}
+
+/**
+ *  @brief cria e insere um lista de estados
+ *  @param [out] list armazena a lista
+ *  @param [in] est estado a ser armazenado
+ */
+void insere_estado(lest_t **list, int est)
+{
+    lest_t *pl= *list, *plant= NULL;
+
+    while(pl!= NULL)
+    {
+        if(pl->estado > est)
+            break;
+        else if(pl->estado == est)
+            return;
+
+        plant= pl;
+        pl= pl->prox;
+    }
+
+    pl= malloc(sizeof(lest_t));
+    pl->estado= est;
+    pl->prox= NULL;
+
+    if(!plant)
+    {
+        pl->prox= *list;
+        *list= pl;
+    }
+    else
+    {
+        pl->prox= plant->prox;
+        plant->prox= pl;
+    }
+
+    return;
+}
 
 
 
