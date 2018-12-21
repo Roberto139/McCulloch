@@ -854,3 +854,35 @@ ltrans_t *busca_transicao_lei(ltrans_t *list, int ei, int ef)
  *  * @param [in] Q quintupla
  *  * @param [in] arquivo nome do aquivo
  **/
+
+void salva_quintupla(quintupla_t Q, char *arquivo)
+{
+    FILE *pf;
+
+    if(!arquivo)
+        pf= stdout;
+    else
+        pf= fopen(arquivo, "w");
+
+    fprintf(pf, "#K\n");
+    fprintf(pf, "%d\n", Q.K);
+    fprintf(pf, "#A\n");
+    fprintf(pf, "%c\n", Q.A);
+    fprintf(pf, "#S\n");
+    fprintf(pf, "%d\n", Q.S);
+    fprintf(pf, "#F\n");
+    imprime_estados(Q.F, pf);
+    fprintf(pf, "#D\n");
+    imprime_transicao(Q.D, pf);
+
+    if(arquivo)
+        fclose(pf);
+
+    return;
+}
+
+/**
+ *  * @brief imprime uma lista de estados
+ *  * @param [in] list lista de estados
+ *  * @param [in] stream objeto onde será impresso a lista de estados
+ **/
