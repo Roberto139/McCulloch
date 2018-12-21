@@ -96,3 +96,11 @@ void estados_limites(quintupla_t *Q)
 
     }
 
+int lista_unitaria(ltrans_t *list)
+{
+    if(!list)
+        return 0;
+    return list->prox ==NULL ? 1:0;
+}
+
+
