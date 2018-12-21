@@ -498,6 +498,153 @@ void imprime_arvore(t_arvore *raiz, FILE *stream)
     return;
 }
 
+/**
+ * @brief realiza as operacoes de acordo com a arvore binaria, na ordem posordem
+ * @param [in] raiz arvore binaria
+ */
+void transformacao(t_arvore *raiz)
+{
+    t_arvore *pl= raiz;
+
+    /* parada da recursividade*/
+    if(!pl)
+        return;
+
+    transformacao(pl->esq);
+    /*caso o operador seja unario, o operador apenas opera com o ramo esquerdo(predefindo a escolha)*/
+    if(pl->tipo_op == 1)
+    {
+        operacao_geral(&pl->Q, pl->esq->Q, pl->esq->Q, pl->expReg[0]);
+        return;
+    }else
+        transformacao(pl->dir);
+
+    /* operador binario*/
+    if(pl->tipo_op == 2)
+    {
+        operacao_geral(&pl->Q, pl->esq->Q, pl->dir->Q, pl->expReg[0]);
+        return;
+    }
+
+    /* nao operador (minima expresao regular)*/
+    mini_quintupla(&pl->Q, pl->expReg[0]);
+    return;
+}
+
+/**
+ *  @brief realiza a operacao qualquer operacao dada
+ *  @param [out] res resultado da operacao
+ *  @param [in] q1 quintupla 1
+ *  @param [in] q2 quintupla 2
+ *  @param [in] op operador
+ */
+void operacao_geral(quintupla_t *res, quintupla_t q1, quintupla_t q2, char op)
+{
+    switch(op)
+    {
+        case '.':
+            operacao_e(res, q1, q2);
+            break;
+        case '|':
+            operacao_ou(res, q1, q2);
+            break;
+        case '*':
+            operacao_estrela(res, q1);
+            break;
+        default:
+            printf("\n\nErro!!!, operador nao existe %c\n\n", op);
+    }
+    return;
+}
+
+/**
+ *  @brief realiza a operacao concatenacao
+ *  @param [out] res resultado da operacao
+ *  @param [in] q1 quintupla 1
+ *  @param [in] q2 quintupla 2
+ */
+void operacao_e(quintupla_t *res, quintupla_t q1, quintupla_t q2)
+{
+    res->K= q1.K + q2.K;
+    res->A= q1.A > q2.A ? q1.A : q2.A; /* a lei maior prevalece, sendo, a < b < c < d ...  */
+    res->S= q1.S; /* estado inicial de q1 prevalece */
+
+    res->F= NULL;
+    copia_lestado(&res->F, q2.F); /* os estados finais de q2 prevalece*/
+
+    /* ambas a transicoes de q1 e q2 sao mantidas e eh adicionado transicoes*/
+    res->D= NULL;
+    copia_ltrans(&res->D, q1.D);
+    copia_ltrans(&res->D, q2.D);
+
+    /* transicoes adicioandas sao as que vao unir os finais de q1 com o inicial de q2*/
+    transicoes_finais(&res->D, q1.F, q2.S);
+
+    return;
+}
+
+/**
+ *  @brief realiza a operacao ou
+ *  @param [out] res resultado da operacao
+ *  @param [in] q1 quintupla 1
+ *  @param [in] q2 quintupla 2
+ */
+void operacao_ou(quintupla_t *res, quintupla_t q1, quintupla_t q2)
+{
+    /* eh adicionado mais dois estados alem dos que ja exitem nas quintuplas q1 e q2*/
+    res->K= q1.K + q2.K + 2;
+    res->A= q1.A > q2.A ? q1.A : q2.A; /* prevalece o maior alfabeto*/
+    res->S= id_estado; /* o estado inicial eh um dos novos estados adicionados*/
+
+    res->F= NULL;
+    insere_estado(&res->F, id_estado+1); /* o estado final eh um dos novos estados adicionados*/
+
+    res->D= NULL;
+    /*As transicoes de q1 e q2 sao mantidas*/
+    copia_ltrans(&res->D, q1.D);
+    copia_ltrans(&res->D, q2.D);
+
+    /* o novo estado inicial eh conectado aos antigos estados inicial de q1 e q2*/
+    insere_transicao(&res->D, res->S, 'E', q1.S);
+    insere_transicao(&res->D, res->S, 'E', q2.S);
+
+    /* O novo estado final eh conectado com os antigos estados finais de q1 e q2*/
+    transicoes_finais(&res->D, q1.F, res->F->estado);
+    transicoes_finais(&res->D, q2.F, res->F->estado);
+
+    /* atualizando os estados totais*/
+    id_estado+= 2;
+
+    return;
+}
+
+/**
+ *  @brief realiza a operacao estrela
+ *  @param [out] res resultado da operacao
+ *  @param [in] q quintupla 
+ */
+void operacao_estrela(quintupla_t *res, quintupla_t q)
+{
+    /* Estados, Alfabedo e Estado Inicial sao mantidos*/
+    res->K= q.K;
+    res->A= q.A;
+    res->S= q.S;
+
+    res->F= NULL;
+    /* Estados Finais sao mantidos e o estado inicial passa ser final tambem*/
+    copia_lestado(&res->F, q.F);
+    insere_estado(&res->F, q.S);
+
+    res->D= NULL;
+    /* Transicoes sao mantidas*/
+    copia_ltrans(&res->D, q.D);
+    /* Os finais de q se ligam com o inicial formando assim a estrela*/
+    transicoes_finais(&res->D, q.F, q.S);
+}
+
+
+
+
 
 
 
