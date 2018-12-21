@@ -385,6 +385,46 @@ void quebraExpressao(char *expReg, t_arvore **raiz)
 }
 
 /**
+ * @brief separa a expressao regular no ponto pre determinado
+ * @param [in] expReg expressao regular
+ * @param [out] partEsc a parte esquerda da expressao regular
+ * @param [out] partDir a parte direita da expressao regular
+ * @param [in] size ponto de bisseccao
+ */
+void separador(char *expReg, char **partEsq, char **partDir, char *op, int size)
+{
+    char *esq, *dir;
+
+    esq= malloc((size + 1) * sizeof(char));
+    dir= malloc((strlen(expReg) - size) * sizeof(char));
+
+    strncpy(esq, expReg, size);
+    esq[size]= '\0';
+    strcpy(dir, expReg+size+1);
+
+    /* retira os parenteses caso toda a expressao esteja contida nas mesmas*/
+    if(*esq == '(' && *(esq+strlen(esq)-1) == ')')
+    {
+        esq= esq+1;
+        esq[strlen(esq)-1]= '\0';
+    }
+    /* retira os parenteses caso toda a expressao esteja contida nas mesmas*/
+    if(*dir == '(' && dir[strlen(dir)-1] == ')')
+    {
+        dir= dir+1;
+        dir[strlen(dir)-1]= '\0';
+    }
+
+    *partEsq= esq;
+    *partDir= dir;
+
+    op[0]= expReg[size];
+    op[1]= '\0';
+
+    return;
+}
+
+/**
  * @brief salva e organiza informacoes no formato de arvore binaria, insere em preordem 
  * @param [out] raiz objeto arvore
  * @param ant auxiliar, serve como orientador, registra a ultima posicao percorrida na arvore, uso interno exclusivo
