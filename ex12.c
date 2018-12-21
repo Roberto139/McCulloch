@@ -928,3 +928,63 @@ void imprime_transicao(ltrans_t *list, FILE *stream)
  *  * @param [out] list lista de estados
  *  * @param [in] est estado(valor) a ser atribuido na lista
  **/
+
+void insere_estado(lest_t **list, int est)
+{
+    lest_t *pl= *list, *plant= NULL;
+
+    while(pl!= NULL)
+    {
+        plant= pl;
+        pl= pl->prox;
+    }
+
+    pl= malloc(sizeof(lest_t));
+    pl->estado= est;
+    pl->prox= NULL;
+
+    if(!plant)
+        *list= pl;
+    else
+        plant->prox= pl;
+
+    return;
+}
+
+/**
+ *  * @brief cria uma lista e atribui novos elementos a lista de transicoes
+ *  * @param [out] list lista de transicoes
+ *  * @param [in] ei estado(valor) a ser atribuido na lista, parte da transicao
+ *  * @param [in] lei expressao que compoe a transicao a ser atribuida na lista
+ *  * @param [in] ef estado(valor) a ser atribuido na lista, parte da transicao
+ **/
+void insere_transicao(ltrans_t **list, int ei, char *lei, int ef)
+{
+    ltrans_t *pl= *list, *plant= NULL;
+
+    while(pl!= NULL)
+    {
+        plant= pl;
+        pl= pl->prox;
+    }
+
+    pl= malloc(sizeof(ltrans_t));
+    pl->ei= ei;
+    pl->lei= (char *) malloc(strlen(lei) * sizeof(char));
+    strcpy(pl->lei, lei);
+    pl->ef= ef;
+    pl->prox= NULL;
+
+    if(!plant)
+        *list= pl;
+    else
+        plant->prox= pl;
+
+    return;
+}
+
+/**
+ *  * @brief remove um elemento da lista de estados
+ *  * @param [out] list lista de estados
+ *  * @param [in] r elemento a ser eliminado
+ **/
